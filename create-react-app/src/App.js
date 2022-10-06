@@ -91,7 +91,35 @@ class App extends Component {
           message.error(`Failed to update theme`);
         });
     };
-    const reset = () => {};
+    let initialValue = {
+      "@primary-color": "#00375B",
+      "@secondary-color": "#0000ff",
+      "@text-color": "#000000",
+      "@text-color-secondary": "#eb2f96",
+      "@heading-color": "#fa8c16",
+      "@layout-header-background": "#b36e94",
+      "@btn-primary-bg": "#397dcc",
+    };
+    let vars = {};
+
+    try {
+      vars = Object.assign({}, initialValue, JSON.parse(localStorage.getItem("app-theme")));
+    } finally {
+      this.state = { vars, initialValue };
+      window.less
+        .modifyVars(vars)
+        .then(() => {})
+        .catch((error) => {
+          message.error(`Failed to update theme`);
+        });
+    }
+    const reset = () => {
+      localStorage.setItem("app-theme", "{}");
+      this.setState({ vars: this.state.initialValue });
+      window.less.modifyVars(this.state.initialValue).catch((error) => {
+        message.error(`Failed to reset theme`);
+      });
+    };
     return (
       <div className="App">
         <Row>
