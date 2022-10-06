@@ -1,6 +1,31 @@
 import React, { Component, Fragment } from "react";
-import { Row, Col, Icon, Breadcrumb, Menu, Layout, Form, Select, Switch, Radio, Card, message, Button, Upload, DatePicker, Progress, Dropdown, Pagination, Checkbox, Badge, List, Avatar } from "antd";
+import {
+  Row,
+  Col,
+  Icon,
+  Breadcrumb,
+  Menu,
+  Layout,
+  Form,
+  Select,
+  Switch,
+  Radio,
+  Card,
+  message,
+  Button,
+  Upload,
+  DatePicker,
+  Progress,
+  Dropdown,
+  Pagination,
+  Checkbox,
+  Badge,
+  List,
+  Avatar,
+  Input,
+} from "antd";
 import moment from "moment";
+import { SketchPicker } from "react-color";
 
 import ColorPicker from "./ColorPicker";
 import "./styles/main.less";
@@ -48,7 +73,49 @@ class App extends Component {
   };
 
   render() {
-    return <div className="App" />;
+    const changeMe = (color) => {
+      const vars = {
+        "@btn-primary-bg": color,
+        "@heading-color": color,
+        "@layout-header-background": color,
+        "@primary-color": color,
+        "@secondary-color": color,
+        "@text-color": color,
+        "@text-color-secondary": color,
+      };
+
+      window.less
+        .modifyVars(vars)
+        .then(() => {})
+        .catch((error) => {
+          message.error(`Failed to update theme`);
+        });
+    };
+    const reset = () => {};
+    return (
+      <div className="App">
+        <Row>
+          <Col>
+            <SketchPicker
+              // onChange={(updatedColor) => console.log(updatedColor.hex)}
+              onChange={(updatedColor) => changeMe(updatedColor.hex)}
+            />
+          </Col>
+          <Col>
+            <Button type="primary">Primary Button</Button>
+          </Col>
+        </Row>
+
+        <Button type="primary" onClick={changeMe}>
+          click me{" "}
+        </Button>
+        <Button type="secondary" onClick={reset}>
+          reset
+        </Button>
+        <Input />
+        <Switch />
+      </div>
+    );
   }
 }
 
